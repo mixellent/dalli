@@ -16,7 +16,11 @@ module Dalli
   class MarshalError < DalliError; end
 
   def self.logger
-    @logger ||= (rails_logger || default_logger)
+    @logger ||= my_logger #(rails_logger || default_logger)
+  end
+
+  def my_logger
+    Logging.logger["cache"]
   end
 
   def self.rails_logger
@@ -31,9 +35,6 @@ module Dalli
     l
   end
 
-  def self.logger=(logger)
-    @logger = logger
-  end
 end
 
 if defined?(RAILS_VERSION) && RAILS_VERSION < '3'
